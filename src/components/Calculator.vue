@@ -21,27 +21,47 @@ import Vue from 'vue'
         </button>
       </div>
     </div>
+    <label><input type="checkbox" v-model="show">Экранная клавиатура</label>
+    <div class="keyboard-screen" v-if="show">       
+      <button v-for="number in numbers" :key="number" @click="inputNum(number)">{{number}}</button>
+      <button @click="delNumber">delete</button>
+      <br>
+      <label><input type="radio" value="operand1" v-model="operand">операнд1</label>
+      <label><input type="radio" value="operand2" v-model="operand">операнд2</label>      
+    </div>
+    
+    
     <div class="logs">
-    <div v-for="(log, id) in logs" v-bind:key="id">{{ log }}</div>
+      <div v-for="(log, id) in logs" v-bind:key="id">{{ log }}</div>
+    </div>
   </div>
-  </div>
-  
 </template>
 
 <script>
 export default {
   name: "Calculator",
   data: () => ({
+    operand: "",
     message: "",
     operand1: 0,
     operand2: 0,
     result: 0,
     error: "",
+    show: false,
     operations: ["+", "-", "*", "/", "**", "//"],
     logs: {}, //логи операций
+    numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+    
   }),
   methods: {
+    delNumber() {
+      this[this.operand] = +String(this[this.operand]).slice(0,-1)
+    },
+    inputNum(number) {
+      this[this.operand] = +[this[this.operand] += String(number)]
+    },
     calculate(operation = "+") {
+      
       this.error = "";
       switch (operation) {
         case "+":
@@ -102,5 +122,11 @@ export default {
 <style lang="scss" scoped>
 .error {
   color: red;
+}
+.keyboard {
+  margin-top: 20px;
+}
+.keyboard-screen {
+  margin-top: 20px;
 }
 </style>
